@@ -2,11 +2,11 @@ set CompilerDirectory=%ProgramFiles%\FreeBASIC
 
 set MainFile=Modules\EntryPoint.bas
 set Classes=
-set Modules=Modules\DisplayError.bas Modules\MainFormEvents.bas Modules\MainFormWndProc.bas Modules\WinMain.bas
+set Modules=Forms\MainFormEvents.bas Forms\MainFormWndProc.bas Modules\DisplayError.bas Modules\WinMain.bas
 set Resources=Resources.RC
 set OutputFile=FullScreenWindow.exe
 
-set IncludeFilesPath=-i Classes -i Interfaces -i Modules -i Headers
+set IncludeFilesPath=-i Classes -i Forms -i Headers -i Interfaces -i Modules
 set IncludeLibraries=-l crypt32 -l Mswsock
 set ExeTypeKind=gui
 
