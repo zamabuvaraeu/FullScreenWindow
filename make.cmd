@@ -2,8 +2,11 @@ set CompilerDirectory=%ProgramFiles%\FreeBASIC
 
 set MainFile=Modules\EntryPoint.bas
 set Classes=
-set Modules=Forms\MainFormEvents.bas Forms\MainFormWndProc.bas Modules\DisplayError.bas Modules\WinMain.bas
+set Forms=Forms\MainFormEvents.bas Forms\MainFormWndProc.bas
+set Modules=Modules\DisplayError.bas Modules\WinMain.bas
+set References=
 set Resources=Resources.RC
+
 set OutputFile=FullScreenWindow.exe
 
 set IncludeFilesPath=-i Classes -i Forms -i Headers -i Interfaces -i Modules
@@ -46,4 +49,4 @@ if "%3"=="withoutruntime" (
 
 set CompilerParameters=%SERVICE_DEFINED% %PERFORMANCE_TESTING_DEFINED% %GUIDS_WITHOUT_MINGW% %MaxErrorsCount% %UseThreadSafeRuntime% %MinWarningLevel% %EnableFunctionProfiling% %EnableShowIncludes% %EnableVerbose% %EnableRuntimeErrorChecking% %IncludeFilesPath% %IncludeLibraries% %OptimizationLevel% %VectorizationLevel% 
 
-call translator.cmd "%MainFile% %Classes% %Modules% %Resources%" "%ExeTypeKind%" "%OutputFile%" "%CompilerDirectory%" "%CompilerParameters%" %EnableDebug% noprofile %WithoutRuntime%
+call translator.cmd "%MainFile% %Classes% %Forms% %Modules% %Resources%" "%ExeTypeKind%" "%OutputFile%" "%CompilerDirectory%" "%CompilerParameters%" %EnableDebug% noprofile %WithoutRuntime%
