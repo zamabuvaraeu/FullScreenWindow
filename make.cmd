@@ -2,7 +2,7 @@ set CompilerDirectory=%ProgramFiles%\FreeBASIC
 
 set MainFile=Modules\EntryPoint.bas
 set Classes=
-set Forms=Forms\MainFormEvents.bas Forms\MainFormWndProc.bas
+set Forms=Forms\DisplaySettingsDialogProc.bas Forms\MainFormEvents.bas Forms\MainFormWndProc.bas
 set Modules=Modules\DisplayError.bas Modules\WinMain.bas
 set References=
 set Resources=Resources.RC
@@ -41,12 +41,10 @@ if "%2"=="debug" (
 
 if "%3"=="withoutruntime" (
 	set WithoutRuntime=withoutruntime
-	set GUIDS_WITHOUT_MINGW=-d GUIDS_WITHOUT_MINGW=1
 ) else (
 	set WithoutRuntime=runtime
-	set GUIDS_WITHOUT_MINGW=
 )
 
-set CompilerParameters=%SERVICE_DEFINED% %PERFORMANCE_TESTING_DEFINED% %GUIDS_WITHOUT_MINGW% %MaxErrorsCount% %UseThreadSafeRuntime% %MinWarningLevel% %EnableFunctionProfiling% %EnableShowIncludes% %EnableVerbose% %EnableRuntimeErrorChecking% %IncludeFilesPath% %IncludeLibraries% %OptimizationLevel% %VectorizationLevel% 
+set CompilerParameters=%SERVICE_DEFINED% %PERFORMANCE_TESTING_DEFINED% %MaxErrorsCount% %UseThreadSafeRuntime% %MinWarningLevel% %EnableFunctionProfiling% %EnableShowIncludes% %EnableVerbose% %EnableRuntimeErrorChecking% %IncludeFilesPath% %IncludeLibraries% %OptimizationLevel% %VectorizationLevel% 
 
 call translator.cmd "%MainFile% %Classes% %Forms% %Modules% %Resources%" "%ExeTypeKind%" "%OutputFile%" "%CompilerDirectory%" "%CompilerParameters%" %EnableDebug% noprofile %WithoutRuntime%

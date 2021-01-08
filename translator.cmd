@@ -205,9 +205,9 @@ set WithoutRuntimeLibraryesFlag=%~8
 :CleanUp
 	
 	if %CodeGenerationBackend%==gcc (
-		del %AllFileWithExtensionC% %AllFileWithExtensionAsm% %AllObjectFiles%
+		echo del %AllFileWithExtensionC% %AllFileWithExtensionAsm% %AllObjectFiles%
 	) else (
-		del %AllFileWithExtensionAsm% %AllObjectFiles%
+		echo del %AllFileWithExtensionAsm% %AllObjectFiles%
 	)
 	exit /b 0
 	
