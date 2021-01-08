@@ -2,8 +2,8 @@ set CompilerDirectory=%ProgramFiles%\FreeBASIC
 
 set MainFile=Modules\EntryPoint.bas
 set Classes=
-set Forms=Forms\DisplaySettingsDialogProc.bas Forms\MainFormEvents.bas Forms\MainFormWndProc.bas
-set Modules=Modules\DisplayError.bas Modules\WinMain.bas
+set Forms=Forms\DisplaySettingsDialogProc.bas Forms\MainFormWndProc.bas
+set Modules=Modules\DisplayError.bas Modules\DisplaySettingsList.bas Modules\WinMain.bas
 set References=
 set Resources=Resources.RC
 
