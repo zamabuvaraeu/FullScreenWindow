@@ -45,6 +45,6 @@ if "%3"=="withoutruntime" (
 	set WithoutRuntime=runtime
 )
 
-set CompilerParameters=-d UNICODE %SERVICE_DEFINED% %PERFORMANCE_TESTING_DEFINED% %MaxErrorsCount% %UseThreadSafeRuntime% %MinWarningLevel% %EnableFunctionProfiling% %EnableShowIncludes% %EnableVerbose% %EnableRuntimeErrorChecking% %IncludeFilesPath% %IncludeLibraries% %OptimizationLevel% %VectorizationLevel% 
+set CompilerParameters=-d UNICODE -d WIN32_LEAN_AND_MEAN %SERVICE_DEFINED% %PERFORMANCE_TESTING_DEFINED% %MaxErrorsCount% %UseThreadSafeRuntime% %MinWarningLevel% %EnableFunctionProfiling% %EnableShowIncludes% %EnableVerbose% %EnableRuntimeErrorChecking% %IncludeFilesPath% %IncludeLibraries% %OptimizationLevel% %VectorizationLevel% 
 
 call translator.cmd "%MainFile% %Classes% %Forms% %Modules% %Resources%" "%ExeTypeKind%" "%OutputFile%" "%CompilerDirectory%" "%CompilerParameters%" %EnableDebug% noprofile %WithoutRuntime%
