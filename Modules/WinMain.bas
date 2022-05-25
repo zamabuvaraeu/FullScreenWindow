@@ -15,6 +15,29 @@ Const GETMESSAGE_ERRORSTRING = __TEXT("Error in GetMessage")
 Const CHANGEDISPLAYSETTINGS_ERRORSTRING = __TEXT("Failed to ChangeDisplaySettings")
 Const DIALOGBOXPARAM_ERRORSTRING = __TEXT("Failed to DialogBoxParam")
 
+Function MessageLoop()As Long
+	
+	Dim wMsg As MSG = Any
+	Dim GetMessageResult As Integer = GetMessage(@wMsg, NULL, 0, 0)
+	
+	Do While GetMessageResult <> 0
+		
+		If GetMessageResult = -1 Then
+			DisplayError(GetLastError(), GETMESSAGE_ERRORSTRING)
+			Return 1
+		End If
+		
+		TranslateMessage(@wMsg)
+		DispatchMessage(@wMsg)
+		
+		GetMessageResult = GetMessage(@wMsg, NULL, 0, 0)
+		
+	Loop
+	
+	Return wMsg.WPARAM
+	
+End Function
+
 Function wWinMain( _
 		Byval hInst As HINSTANCE, _
 		ByVal hPrevInstance As HINSTANCE, _
@@ -145,27 +168,10 @@ Function wWinMain( _
 		UpdateWindow(hWndMain)
 	End Scope
 	
-	Scope
-		Dim wMsg As MSG = Any
-		Dim GetMessageResult As Integer = GetMessage(@wMsg, NULL, 0, 0)
-		
-		Do While GetMessageResult <> 0
-			
-			If GetMessageResult = -1 Then
-				DisplayError(GetLastError(), GETMESSAGE_ERRORSTRING)
-				Return 1
-			End If
-			
-			TranslateMessage(@wMsg)
-			DispatchMessage(@wMsg)
-			
-			GetMessageResult = GetMessage(@wMsg, NULL, 0, 0)
-			
-		Loop
-		
-		ChangeDisplaySettings(NULL, 0)
-		
-		Return wMsg.WPARAM
-	End Scope
+	Dim res As Long = MessageLoop()
+	
+	ChangeDisplaySettings(NULL, 0)
+	
+	Return res
 	
 End Function
