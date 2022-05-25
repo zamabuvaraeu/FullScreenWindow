@@ -101,34 +101,6 @@ OBJ_RELEASE_DIR_86=obj\Release\x86
 
 ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
 
-ifndef FREEBASIC_COMPILER
-FREEBASIC_COMPILER="$(ProgramFiles)\FreeBASIC\fbc.exe"
-endif
-ifndef GCC_COMPILER
-GCC_COMPILER=      "$(ProgramFiles)\FreeBASIC\bin\win64\gcc.exe"
-endif
-ifndef GCC_ASSEMBLER
-GCC_ASSEMBLER=     "$(ProgramFiles)\FreeBASIC\bin\win64\as.exe"
-endif
-ifndef GCC_LINKER
-GCC_LINKER=        "$(ProgramFiles)\FreeBASIC\bin\win64\ld.exe"
-endif
-ifndef ARCHIVE_COMPILER
-ARCHIVE_COMPILER=  "$(ProgramFiles)\FreeBASIC\bin\win64\ar.exe"
-endif
-ifndef DLL_TOOL
-DLL_TOOL=          "$(ProgramFiles)\FreeBASIC\bin\win64\dlltool.exe"
-endif
-ifndef RESOURCE_COMPILER
-RESOURCE_COMPILER= "$(ProgramFiles)\FreeBASIC\bin\win64\GoRC.exe"
-endif
-ifndef COMPILER_LIB_PATH
-COMPILER_LIB_PATH= $(ProgramFiles)\FreeBASIC\lib\win64
-endif
-ifndef FB_EXTRA
-FB_EXTRA=          "$(ProgramFiles)\FreeBASIC\lib\win64\fbextra.x"
-endif
-
 GCC_ARCHITECTURE=-m64 -march=x86-64
 TARGET_ASSEMBLER_ARCH=--64
 ifeq ($(WITHOUT_RUNTIME_FLAG),true)
@@ -144,34 +116,6 @@ OBJ_DEBUG_DIR=$(OBJ_DEBUG_DIR_64)
 OBJ_RELEASE_DIR=$(OBJ_RELEASE_DIR_64)
 
 else
-
-ifndef FREEBASIC_COMPILER
-FREEBASIC_COMPILER="$(ProgramFiles)\FreeBASIC\fbc.exe"
-endif
-ifndef GCC_COMPILER
-GCC_COMPILER=      "$(ProgramFiles)\FreeBASIC\bin\win32\gcc.exe"
-endif
-ifndef GCC_ASSEMBLER
-GCC_ASSEMBLER=     "$(ProgramFiles)\FreeBASIC\bin\win32\as.exe"
-endif
-ifndef GCC_LINKER
-GCC_LINKER=        "$(ProgramFiles)\FreeBASIC\bin\win32\ld.exe"
-endif
-ifndef ARCHIVE_COMPILER
-ARCHIVE_COMPILER=  "$(ProgramFiles)\FreeBASIC\bin\win32\ar.exe"
-endif
-ifndef DLL_TOOL
-DLL_TOOL=          "$(ProgramFiles)\FreeBASIC\bin\win32\dlltool.exe"
-endif
-ifndef RESOURCE_COMPILER
-RESOURCE_COMPILER= "$(ProgramFiles)\FreeBASIC\bin\win32\GoRC.exe"
-endif
-ifndef COMPILER_LIB_PATH
-COMPILER_LIB_PATH= $(ProgramFiles)\FreeBASIC\lib\win32
-endif
-ifndef FB_EXTRA
-FB_EXTRA=          "$(ProgramFiles)\FreeBASIC\lib\win32\fbextra.x"
-endif
 
 GCC_ARCHITECTURE=
 TARGET_ASSEMBLER_ARCH=--32
