@@ -15,7 +15,7 @@ Const GETMESSAGE_ERRORSTRING = __TEXT("Error in GetMessage")
 Const CHANGEDISPLAYSETTINGS_ERRORSTRING = __TEXT("Failed to ChangeDisplaySettings")
 Const DIALOGBOXPARAM_ERRORSTRING = __TEXT("Failed to DialogBoxParam")
 
-Function MessageLoop()As Long
+Function MessageLoop()As Integer
 	
 	Dim wMsg As MSG = Any
 	Dim GetMessageResult As Integer = GetMessage(@wMsg, NULL, 0, 0)
@@ -38,39 +38,111 @@ Function MessageLoop()As Long
 	
 End Function
 
-Function wWinMain( _
+Function RegisterWindowClass( _
+		Byval hInst As HINSTANCE _
+	)As Integer
+	
+	Dim wcls As WNDCLASSEX = Any
+	With wcls
+		.cbSize        = SizeOf(WNDCLASSEX)
+		' .style         = 0
+		.style         = CS_HREDRAW Or CS_VREDRAW
+		.lpfnWndProc   = @MainFormWndProc
+		.cbClsExtra    = 0
+		.cbWndExtra    = 0
+		.hInstance     = hInst
+		.hIcon         = LoadIcon(hInst, Cast(TCHAR Ptr, IDI_MAIN))
+		.hCursor       = LoadCursor(NULL, IDC_ARROW)
+		' .hbrBackground = Cast(HBRUSH, GetStockObject(BLACK_BRUSH))
+		.hbrBackground = NULL
+		.lpszMenuName  = NULL
+		.lpszClassName = StrPtr(MainWindowClassName)
+		.hIconSm       = NULL
+	End With
+	
+	Dim regAtom As ATOM = RegisterClassEx(@wcls)
+	If regAtom = 0 Then
+		DisplayError(GetLastError(), REGISTERWINDOWCLASS_ERRORSTRING)
+		Return 1
+	End If
+	
+	Return 0
+	
+End Function
+
+Function RegisterControls60()As Integer
+	
+	Dim icc As INITCOMMONCONTROLSEX = Any
+	icc.dwSize = SizeOf(INITCOMMONCONTROLSEX)
+	icc.dwICC = ICC_ANIMATE_CLASS Or _
+		ICC_BAR_CLASSES Or _
+		ICC_COOL_CLASSES Or _
+		ICC_DATE_CLASSES Or _
+		ICC_HOTKEY_CLASS Or _
+		ICC_INTERNET_CLASSES Or _
+		ICC_LINK_CLASS Or _
+		ICC_LISTVIEW_CLASSES Or _
+		ICC_NATIVEFNTCTL_CLASS Or _
+		ICC_PAGESCROLLER_CLASS Or _
+		ICC_PROGRESS_CLASS Or _
+		ICC_STANDARD_CLASSES Or _
+		ICC_TAB_CLASSES Or _
+		ICC_TREEVIEW_CLASSES Or _
+		ICC_UPDOWN_CLASS Or _
+		ICC_USEREX_CLASSES Or _
+	ICC_WIN95_CLASSES
+	
+	Dim resInitControls As BOOL = InitCommonControlsEx(@icc)
+	If resInitControls = 0 Then
+		DisplayError(GetLastError(), COMMONCONTROLS_ERRORSTRING)
+		Return 1
+	End If
+	
+End Function
+
+Function CreateMainWindow( _
 		Byval hInst As HINSTANCE, _
-		ByVal hPrevInstance As HINSTANCE, _
-		ByVal lpCmdLine As LPWSTR, _
+		ByVal WindowWidth As Long, _
+		ByVal WindowHeight As Long, _
 		ByVal iCmdShow As Long _
 	)As Long
 	
-	Scope
-		Dim icc As INITCOMMONCONTROLSEX = Any
-		icc.dwSize = SizeOf(INITCOMMONCONTROLSEX)
-		icc.dwICC = ICC_ANIMATE_CLASS Or _
-			ICC_BAR_CLASSES Or _
-			ICC_COOL_CLASSES Or _
-			ICC_DATE_CLASSES Or _
-			ICC_HOTKEY_CLASS Or _
-			ICC_INTERNET_CLASSES Or _
-			ICC_LINK_CLASS Or _
-			ICC_LISTVIEW_CLASSES Or _
-			ICC_NATIVEFNTCTL_CLASS Or _
-			ICC_PAGESCROLLER_CLASS Or _
-			ICC_PROGRESS_CLASS Or _
-			ICC_STANDARD_CLASSES Or _
-			ICC_TAB_CLASSES Or _
-			ICC_TREEVIEW_CLASSES Or _
-			ICC_UPDOWN_CLASS Or _
-			ICC_USEREX_CLASSES Or _
-		ICC_WIN95_CLASSES
-		
-		If InitCommonControlsEx(@icc) = False Then
-			DisplayError(GetLastError(), COMMONCONTROLS_ERRORSTRING)
-			Return 1
-		End If
-	End Scope
+	Const WindowPositionX As Long = 0
+	Const WindowPositionY As Long = 0
+	Const StyleEx As DWORD = 0
+	Const Style As DWORD = WS_POPUP
+	
+	'Const StyleEx As DWORD = WS_EX_OVERLAPPEDWINDOW ' 0
+	'Const Style As DWORD = WS_OVERLAPPEDWINDOW ' WS_POPUP
+	
+	Dim hWndMain As HWND = CreateWindowEx( _
+		StyleEx, _
+		StrPtr(MainWindowClassName), _
+		StrPtr(MainWindowClassName), _
+		Style, _
+		WindowPositionX, _
+		WindowPositionY, _
+		WindowWidth, _
+		WindowHeight, _
+		NULL, _
+		Cast(HMENU, NULL), _
+		hInst, _
+		NULL _
+	)
+	If hWndMain = NULL Then
+		DisplayError(GetLastError(), CREATEWINDOW_ERRORSTRING)
+		Return 1
+	End If
+	
+	ShowWindow(hWndMain, iCmdShow)
+	UpdateWindow(hWndMain)
+	
+End Function
+
+Function GetDisplayResolution( _
+		Byval hInst As HINSTANCE, _
+		ByVal pResolution As SIZE Ptr _
+	)As Integer
 	
 	Dim pNodeList As DevmodeNode Ptr = GetDisplaySettingsList(GetProcessHeap())
 	
@@ -95,83 +167,63 @@ Function wWinMain( _
 		pNode = pNode->NextNode
 	Next
 	
-	Scope
-		pNode->DeviceMode.dmFields = DM_PELSWIDTH Or DM_PELSHEIGHT Or DM_BITSPERPEL
-		
-		Dim r As Long = ChangeDisplaySettings(@pNode->DeviceMode, CDS_FULLSCREEN)
-		If r <> DISP_CHANGE_SUCCESSFUL Then
-			DisplayError(r, CHANGEDISPLAYSETTINGS_ERRORSTRING)
-			Return 1
-		End If
-	End Scope
+	pNode->DeviceMode.dmFields = DM_PELSWIDTH Or DM_PELSHEIGHT Or DM_BITSPERPEL
 	
-	Scope
-		Dim wcls As WNDCLASSEX = Any
-		With wcls
-			.cbSize        = SizeOf(WNDCLASSEX)
-			' .style         = 0
-			.style         = CS_HREDRAW Or CS_VREDRAW
-			.lpfnWndProc   = @MainFormWndProc
-			.cbClsExtra    = 0
-			.cbWndExtra    = 0
-			.hInstance     = hInst
-			.hIcon         = LoadIcon(hInst, Cast(TCHAR Ptr, IDI_MAIN))
-			.hCursor       = LoadCursor(NULL, IDC_ARROW)
-			' .hbrBackground = Cast(HBRUSH, GetStockObject(BLACK_BRUSH))
-			.hbrBackground = NULL
-			.lpszMenuName  = NULL
-			.lpszClassName = StrPtr(MainWindowClassName)
-			.hIconSm       = NULL
-		End With
-		
-		If RegisterClassEx(@wcls) = FALSE Then
-			DisplayError(GetLastError(), REGISTERWINDOWCLASS_ERRORSTRING)
-			Return 1
-		End If
-	End Scope
+	Dim r As Long = ChangeDisplaySettings(@pNode->DeviceMode, CDS_FULLSCREEN)
+	If r <> DISP_CHANGE_SUCCESSFUL Then
+		DisplayError(r, CHANGEDISPLAYSETTINGS_ERRORSTRING)
+		Return 1
+	End If
 	
-	Scope
-		Dim WindowWidth As Long = pNode->DeviceMode.dmPelsWidth
-		Dim WindowHeight As Long = pNode->DeviceMode.dmPelsHeight
-		
-		'Dim WindowWidth As Long = 640
-		'Dim WindowHeight As Long = 480
-		
-		Const WindowPositionX As Long = 0
-		Const WindowPositionY As Long = 0
-		Const StyleEx As DWORD = 0
-		Const Style As DWORD = WS_POPUP
-		
-		'Const StyleEx As DWORD = WS_EX_OVERLAPPEDWINDOW ' 0
-		'Const Style As DWORD = WS_OVERLAPPEDWINDOW ' WS_POPUP
-		
-		Dim hWndMain As HWND = CreateWindowEx( _
-			StyleEx, _
-			StrPtr(MainWindowClassName), _
-			StrPtr(MainWindowClassName), _
-			Style, _
-			WindowPositionX, _
-			WindowPositionY, _
-			WindowWidth, _
-			WindowHeight, _
-			NULL, _
-			Cast(HMENU, NULL), _
-			hInst, _
-			NULL _
-		)
-		If hWndMain = NULL Then
-			DisplayError(GetLastError(), CREATEWINDOW_ERRORSTRING)
-			Return 1
-		End If
-		
-		ShowWindow(hWndMain, iCmdShow)
-		UpdateWindow(hWndMain)
-	End Scope
+	pResolution->cx = pNode->DeviceMode.dmPelsWidth
+	pResolution->cy = pNode->DeviceMode.dmPelsHeight
 	
-	Dim res As Long = MessageLoop()
+	Return 0
+	
+End Function
+
+Function wWinMain( _
+		Byval hInst As HINSTANCE, _
+		ByVal hPrevInstance As HINSTANCE, _
+		ByVal lpCmdLine As LPWSTR, _
+		ByVal iCmdShow As Long _
+	)As Long
+	
+	Dim resControls As Long = RegisterControls60()
+	If resControls > 0 Then
+		Return resControls
+	End If
+	
+	Dim resRegister As Long = RegisterWindowClass(hInst)
+	If resRegister > 0 Then
+		Return resRegister
+	End If
+	
+	Dim Resolution As SIZE = Any
+	Dim resDisplayResolution As Integer = GetDisplayResolution( _
+		hInst, _
+		@Resolution _
+	)
+	If resDisplayResolution > 0 Then
+		Return resDisplayResolution
+	End If
+	
+	'Dim WindowWidth As Long = 640
+	'Dim WindowHeight As Long = 480
+	Dim resCreateWindow As Integer = CreateMainWindow( _
+		hInst, _
+		Resolution.cx, _
+		Resolution.cy, _
+		iCmdShow _
+	)
+	If resCreateWindow > 0 Then
+		Return resCreateWindow
+	End If
+	
+	Dim resMessageLoop As Integer = MessageLoop()
 	
 	ChangeDisplaySettings(NULL, 0)
 	
-	Return res
+	Return resMessageLoop
 	
 End Function
