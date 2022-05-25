@@ -182,7 +182,7 @@ Function GetDisplayResolution( _
 	
 End Function
 
-Function wWinMain( _
+Function wWinMain Alias "wWinMain"( _
 		Byval hInst As HINSTANCE, _
 		ByVal hPrevInstance As HINSTANCE, _
 		ByVal lpCmdLine As LPWSTR, _
