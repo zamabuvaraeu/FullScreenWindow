@@ -216,11 +216,11 @@ $(OBJ_RELEASE_DIR)\EntryPoint$(FILE_SUFFIX_GUI).asm: $(OBJ_RELEASE_DIR)\EntryPoi
 $(OBJ_DEBUG_DIR)\EntryPoint$(FILE_SUFFIX_GUI).asm:   $(OBJ_DEBUG_DIR)\EntryPoint$(FILE_SUFFIX_GUI).c
 	$(GCC_COMPILER) $(GCC_COMPILER_PARAMETERS_DEBUG) $(OBJ_DEBUG_DIR)\EntryPoint$(FILE_SUFFIX_GUI).c -o $(OBJ_DEBUG_DIR)\EntryPoint$(FILE_SUFFIX_GUI).asm
 
-$(OBJ_RELEASE_DIR)\EntryPoint$(FILE_SUFFIX_GUI).c: Modules\EntryPoint.bas Modules\EntryPoint.bi
+$(OBJ_RELEASE_DIR)\EntryPoint$(FILE_SUFFIX_GUI).c: Modules\EntryPoint.bas Modules\EntryPoint.bi Modules\WinMain.bi
 	$(FREEBASIC_COMPILER) $(FREEBASIC_PARAMETERS_RELEASE_GUI) "Modules\EntryPoint.bas"
 	move /y Modules\EntryPoint.c $(OBJ_RELEASE_DIR)\EntryPoint$(FILE_SUFFIX_GUI).c
 
-$(OBJ_DEBUG_DIR)\EntryPoint$(FILE_SUFFIX_GUI).c:   Modules\EntryPoint.bas Modules\EntryPoint.bi
+$(OBJ_DEBUG_DIR)\EntryPoint$(FILE_SUFFIX_GUI).c:   Modules\EntryPoint.bas Modules\EntryPoint.bi Modules\WinMain.bi
 	$(FREEBASIC_COMPILER) $(FREEBASIC_PARAMETERS_DEBUG_GUI) "Modules\EntryPoint.bas"
 	move /y Modules\EntryPoint.c $(OBJ_DEBUG_DIR)\EntryPoint$(FILE_SUFFIX_GUI).c
 
@@ -282,11 +282,11 @@ $(OBJ_RELEASE_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).asm: $(OBJ_RELEAS
 $(OBJ_DEBUG_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).asm:   $(OBJ_DEBUG_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).c
 	$(GCC_COMPILER) $(GCC_COMPILER_PARAMETERS_DEBUG) $(OBJ_DEBUG_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).c -o $(OBJ_DEBUG_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).asm
 
-$(OBJ_RELEASE_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).c: Forms\DisplaySettingsDialogProc.bas Forms\DisplaySettingsDialogProc.bi
+$(OBJ_RELEASE_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).c: Forms\DisplaySettingsDialogProc.bas Forms\DisplaySettingsDialogProc.bi Modules\DisplaySettingsList.bi Resources\Resources.RH
 	$(FREEBASIC_COMPILER) $(FREEBASIC_PARAMETERS_RELEASE_GUI) "Forms\DisplaySettingsDialogProc.bas"
 	move /y Forms\DisplaySettingsDialogProc.c $(OBJ_RELEASE_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).c
 
-$(OBJ_DEBUG_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).c:   Forms\DisplaySettingsDialogProc.bas Forms\DisplaySettingsDialogProc.bi
+$(OBJ_DEBUG_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).c:   Forms\DisplaySettingsDialogProc.bas Forms\DisplaySettingsDialogProc.bi Modules\DisplaySettingsList.bi Resources\Resources.RH
 	$(FREEBASIC_COMPILER) $(FREEBASIC_PARAMETERS_DEBUG_GUI) "Forms\DisplaySettingsDialogProc.bas"
 	move /y Forms\DisplaySettingsDialogProc.c $(OBJ_DEBUG_DIR)\DisplaySettingsDialogProc$(FILE_SUFFIX_GUI).c
 
@@ -326,11 +326,11 @@ $(OBJ_RELEASE_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).asm: $(OBJ_RELEASE_DIR)\Mai
 $(OBJ_DEBUG_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).asm:   $(OBJ_DEBUG_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).c
 	$(GCC_COMPILER) $(GCC_COMPILER_PARAMETERS_DEBUG) $(OBJ_DEBUG_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).c -o $(OBJ_DEBUG_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).asm
 
-$(OBJ_RELEASE_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).c: Forms\MainFormWndProc.bas Forms\MainFormWndProc.bi
+$(OBJ_RELEASE_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).c: Forms\MainFormWndProc.bas Forms\MainFormWndProc.bi Modules\DisplayError.bi Modules\GdiMatrix.bi Resources\Resources.RH
 	$(FREEBASIC_COMPILER) $(FREEBASIC_PARAMETERS_RELEASE_GUI) "Forms\MainFormWndProc.bas"
 	move /y Forms\MainFormWndProc.c $(OBJ_RELEASE_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).c
 
-$(OBJ_DEBUG_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).c:   Forms\MainFormWndProc.bas Forms\MainFormWndProc.bi
+$(OBJ_DEBUG_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).c:   Forms\MainFormWndProc.bas Forms\MainFormWndProc.bi Modules\DisplayError.bi Modules\GdiMatrix.bi Resources\Resources.RH
 	$(FREEBASIC_COMPILER) $(FREEBASIC_PARAMETERS_DEBUG_GUI) "Forms\MainFormWndProc.bas"
 	move /y Forms\MainFormWndProc.c $(OBJ_DEBUG_DIR)\MainFormWndProc$(FILE_SUFFIX_GUI).c
 
@@ -345,6 +345,7 @@ $(OBJ_DEBUG_DIR)\Resources$(FILE_SUFFIX_BASE).obj:   Resources\Resources.RC Reso
 	move /y Resources\Resources.obj $(OBJ_DEBUG_DIR)\Resources$(FILE_SUFFIX_BASE).obj
 
 
+
 $(OBJ_RELEASE_DIR)\WinMain$(FILE_SUFFIX_GUI).o: $(OBJ_RELEASE_DIR)\WinMain$(FILE_SUFFIX_GUI).asm
 	$(GCC_ASSEMBLER) $(GCC_ASSEMBLER_PARAMETERS_RELEASE) $(OBJ_RELEASE_DIR)\WinMain$(FILE_SUFFIX_GUI).asm -o $(OBJ_RELEASE_DIR)\WinMain$(FILE_SUFFIX_GUI).o
 
@@ -357,10 +358,10 @@ $(OBJ_RELEASE_DIR)\WinMain$(FILE_SUFFIX_GUI).asm: $(OBJ_RELEASE_DIR)\WinMain$(FI
 $(OBJ_DEBUG_DIR)\WinMain$(FILE_SUFFIX_GUI).asm:   $(OBJ_DEBUG_DIR)\WinMain$(FILE_SUFFIX_GUI).c
 	$(GCC_COMPILER) $(GCC_COMPILER_PARAMETERS_DEBUG) $(OBJ_DEBUG_DIR)\WinMain$(FILE_SUFFIX_GUI).c -o $(OBJ_DEBUG_DIR)\WinMain$(FILE_SUFFIX_GUI).asm
 
-$(OBJ_RELEASE_DIR)\WinMain$(FILE_SUFFIX_GUI).c: Modules\WinMain.bas Modules\WinMain.bi Resources\Resources.RH Modules\DisplayError.bi Forms\MainFormWndProc.bi
+$(OBJ_RELEASE_DIR)\WinMain$(FILE_SUFFIX_GUI).c: Modules\WinMain.bas Modules\WinMain.bi Forms\DisplaySettingsDialogProc.bi Modules\DisplaySettingsList.bi Forms\MainFormWndProc.bi Resources\Resources.RH Modules\DisplayError.bi
 	$(FREEBASIC_COMPILER) $(FREEBASIC_PARAMETERS_RELEASE_GUI) "Modules\WinMain.bas"
 	move /y Modules\WinMain.c $(OBJ_RELEASE_DIR)\WinMain$(FILE_SUFFIX_GUI).c
 
-$(OBJ_DEBUG_DIR)\WinMain$(FILE_SUFFIX_GUI).c:   Modules\WinMain.bas Modules\WinMain.bi Resources\Resources.RH Modules\DisplayError.bi Forms\MainFormWndProc.bi
+$(OBJ_DEBUG_DIR)\WinMain$(FILE_SUFFIX_GUI).c:   Modules\WinMain.bas Modules\WinMain.bi Forms\DisplaySettingsDialogProc.bi Modules\DisplaySettingsList.bi Forms\MainFormWndProc.bi Resources\Resources.RH Modules\DisplayError.bi
 	$(FREEBASIC_COMPILER) $(FREEBASIC_PARAMETERS_DEBUG_GUI) "Modules\WinMain.bas"
 	move /y Modules\WinMain.c $(OBJ_DEBUG_DIR)\WinMain$(FILE_SUFFIX_GUI).c

@@ -1,6 +1,4 @@
 #include once "GdiMatrix.bi"
-#include once "win\ole2.bi"
-#include once "win\oleauto.bi"
 
 Sub MatrixSetTranslate( _
 		ByVal m As XFORM Ptr, _
